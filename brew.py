@@ -18,7 +18,9 @@ class FileTableParam(click.File):
     '-o', '--output', required=True,
     help='Output database file', type=click.Path()
 )
-@click.option('-d', '--dryrun', default=False, is_flag=True)
+@click.option(
+    '-d', '--dryrun', default=False, is_flag=True, help='Do a fake run.'
+)
 @click.argument('fastq_files', type=FileTableParam(), nargs=-1)
 def builder(**kwargs):
     main_routine(**kwargs)
