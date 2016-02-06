@@ -22,6 +22,7 @@ class FileTableParam(click.File):
 
 
 class FieldsToUse(click.ParamType):
+    name = 'filed-list'
 
     def convert(self, value, param, ctx):
         fields = value.split(",")
@@ -40,7 +41,11 @@ class FieldsToUse(click.ParamType):
 
 @click.command(
     context_settings=dict(help_option_names=['-h', '--help']),
-    help="Creates sqlite3 database from fastq files."
+    help=(
+        "Creates sqlite3 database from fastq files. "
+        "sample usage: brew -o output.db file1@table1 ... "
+        "filen@tablen -f field1,filed2"
+    )
 )
 @click.option(
     '-o', '--output', required=True,
@@ -52,8 +57,8 @@ class FieldsToUse(click.ParamType):
 @click.option(
     '-f', '--fields', default="read_identifier,sequence", type=FieldsToUse(),
     help=(
-        'Fileds to parse, some of \n%s.' %
-        ', '.join(sorted(DEFAULT_SPECIFICATION))
+        'Comma separated field list to parse, some of %s.' %
+        ','.join(sorted(DEFAULT_SPECIFICATION))
     )
 )
 @click.argument('fastq_files', type=FileTableParam(), nargs=-1)
