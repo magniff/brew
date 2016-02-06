@@ -1,6 +1,6 @@
 import click
 
-from libbuilder import main_routine
+from .libbuilder import main_routine
 
 
 class FileTableParam(click.File):
@@ -22,9 +22,9 @@ class FileTableParam(click.File):
     '-d', '--dryrun', default=False, is_flag=True, help='Do a fake run.'
 )
 @click.argument('fastq_files', type=FileTableParam(), nargs=-1)
-def builder(**kwargs):
+def brew(**kwargs):
     main_routine(**kwargs)
 
 
 if __name__ == "__main__":
-    builder()
+    brew()
