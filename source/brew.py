@@ -8,13 +8,23 @@ class FileTableParam(click.File):
     FNAME_TABLE_SEPARATOR = "@"
 
     def convert(self, value, param, ctx):
+        if self.FNAME_TABLE_SEPARATOR not in value:
+            self.fail(
+                "fastq params should have structure like "
+                "filename%stablename" % self.FNAME_TABLE_SEPARATOR,
+                param, ctx
+            )
+
         file_name, table_name = value.split(self.FNAME_TABLE_SEPARATOR)
         convertion_result = super().convert(file_name, param, ctx)
         convertion_result.table_name = table_name
         return convertion_result
 
 
-@click.command(context_settings=dict(help_option_names=['-h', '--help']))
+@click.command(
+    context_settings=dict(help_option_names=['-h', '--help']),
+    help="Creates sqlite3 database from fastq files."
+)
 @click.option(
     '-o', '--output', required=True,
     help='Output database file', type=click.Path()
