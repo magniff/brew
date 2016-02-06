@@ -1,5 +1,5 @@
-default_specification = {
-    "read_identifier": str,
+PRIMARI_KEY = "read_identifier"
+DEFAULT_SPECIFICATION = {
     "instrument": str,
     "run_number": int,
     "flowcell_id": str,
@@ -16,6 +16,7 @@ default_specification = {
     "quality_marker": str,
     "quality_string": str,
 }
+DEFAULT_SPECIFICATION.update({PRIMARI_KEY: str})
 
 
 def match_dict_with_specification(dict_to_test, specification):

@@ -1,7 +1,7 @@
 import click
 
 from .libbuilder import main_routine
-from .libbuilder.specification import default_specification
+from .libbuilder.specification import DEFAULT_SPECIFICATION, PRIMARI_KEY
 
 
 class FileTableParam(click.File):
@@ -21,6 +21,23 @@ class FileTableParam(click.File):
         return convertion_result
 
 
+class FieldsToUse(click.ParamType):
+
+    def convert(self, value, param, ctx):
+        fields = value.split(",")
+
+        for field in fields:
+            if field not in DEFAULT_SPECIFICATION:
+                self.fail("unknown field %s." % field, param, ctx)
+
+        if PRIMARI_KEY not in fields:
+            self.fail(
+                "field list should contain field %s." % PRIMARI_KEY,
+                param, ctx
+            )
+        return fields
+
+
 @click.command(
     context_settings=dict(help_option_names=['-h', '--help']),
     help="Creates sqlite3 database from fastq files."
@@ -33,10 +50,10 @@ class FileTableParam(click.File):
     '-d', '--dryrun', default=False, is_flag=True, help='Do a fake run.'
 )
 @click.option(
-    '-f', '--fields', default="read_identifier,sequence",
+    '-f', '--fields', default="read_identifier,sequence", type=FieldsToUse(),
     help=(
         'Fileds to parse, some of \n%s.' %
-        ', '.join(sorted(default_specification))
+        ', '.join(sorted(DEFAULT_SPECIFICATION))
     )
 )
 @click.argument('fastq_files', type=FileTableParam(), nargs=-1)

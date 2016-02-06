@@ -2,7 +2,7 @@ import pipe
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import orm, Column, String, create_engine, SmallInteger
 
-from .specification import default_specification
+from .specification import DEFAULT_SPECIFICATION, PRIMARI_KEY
 
 TYPES_MAP = {
     int: SmallInteger, str: String
@@ -15,13 +15,13 @@ def build_orm_class(table_name, base_class, specification):
         specification.items()
     }
     klass_fields['__tablename__'] = table_name
-    klass_fields['read_identifier'] = Column(String, primary_key=True)
+    klass_fields[PRIMARI_KEY] = Column(String, primary_key=True)
     return type(table_name, (base_class,), klass_fields)
 
 
 @pipe.Pipe
 def write_to_sqlite(records_iterator, table_name, output, specification=None):
-    specification = specification or default_specification
+    specification = specification or DEFAULT_SPECIFICATION
 
     engine = create_engine('sqlite:///%s' % output)
     session = orm.sessionmaker(bind=engine)()

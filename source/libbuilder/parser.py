@@ -1,6 +1,6 @@
 import pipe
 
-from .specification import default_specification, match_dict_with_specification
+from .specification import DEFAULT_SPECIFICATION, match_dict_with_specification
 
 
 def parse_identifier(identifier_string):
@@ -33,7 +33,7 @@ DEFAULT_PARSE_ROUTINES = {"identifier_string": parse_identifier}
 @pipe.Pipe
 def parse_records(records, parse_routines=None, specification=None):
     parse_routines = parse_routines or DEFAULT_PARSE_ROUTINES
-    specification = specification or default_specification
+    specification = specification or DEFAULT_SPECIFICATION
 
     for record in records:
         parsed_record = record.copy()

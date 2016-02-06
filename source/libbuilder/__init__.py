@@ -1,15 +1,13 @@
 from .reader import generate_records_from_fastq
 from .parser import parse_records
 from .storage import write_to_sqlite
-from .specification import default_specification
+from .specification import DEFAULT_SPECIFICATION
 
 
 def main_routine(fastq_files, output, dryrun, fields):
-    user_spec = default_specification
+    user_spec = DEFAULT_SPECIFICATION
     if fields is not None:
-        user_spec = {
-            field: default_specification[field] for field in fields.split(',')
-        }
+        user_spec = {field: DEFAULT_SPECIFICATION[field] for field in fields}
 
     print('Using fields: %s.' % ', '.join(user_spec))
     for fastq in fastq_files:
