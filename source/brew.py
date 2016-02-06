@@ -1,6 +1,7 @@
 import click
 
 from .libbuilder import main_routine
+from .libbuilder.specification import default_specification
 
 
 class FileTableParam(click.File):
@@ -20,6 +21,13 @@ class FileTableParam(click.File):
 )
 @click.option(
     '-d', '--dryrun', default=False, is_flag=True, help='Do a fake run.'
+)
+@click.option(
+    '-f', '--fields', default="read_identifier,sequence",
+    help=(
+        'Fileds to parse, some of \n%s.' %
+        ', '.join(sorted(default_specification))
+    )
 )
 @click.argument('fastq_files', type=FileTableParam(), nargs=-1)
 def brew(**kwargs):

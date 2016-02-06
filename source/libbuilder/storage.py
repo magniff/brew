@@ -33,7 +33,7 @@ def write_to_sqlite(records_iterator, table_name, output, specification=None):
     for record in records_iterator:
         session.add(mapper_klass(**record))
         batch_counter += 1
-        if batch_counter > 40000:
+        if batch_counter > 80000:
             session.commit()
             batch_counter = 0
 
