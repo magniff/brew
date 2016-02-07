@@ -1,12 +1,19 @@
-import pipe
+import itertools
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import orm, Column, String, create_engine, SmallInteger
+import pipe
 
 from .specification import DEFAULT_SPECIFICATION, PRIMARI_KEY
 
 TYPES_MAP = {
     int: SmallInteger, str: String
 }
+
+
+def grouper(iterable, n, fillvalue=None):
+    args = [iter(iterable)] * n
+    return itertools.zip_longest(fillvalue=fillvalue, *args)
 
 
 def build_orm_class(table_name, base_class, specification):
@@ -20,21 +27,20 @@ def build_orm_class(table_name, base_class, specification):
 
 
 @pipe.Pipe
-def write_to_sqlite(records_iterator, table_name, output, specification=None):
+def write_to_sqlite(
+        records_iterator, table_name, output, group_size, specification=None
+    ):
     specification = specification or DEFAULT_SPECIFICATION
 
-    engine = create_engine('sqlite:///%s' % output)
-    session = orm.sessionmaker(bind=engine)()
     Base = declarative_base()
+    engine = create_engine('sqlite:///%s' % output)
     mapper_klass = build_orm_class(table_name, Base, specification)
     Base.metadata.create_all(engine)
 
-    batch_counter = 0
-    for record in records_iterator:
-        session.add(mapper_klass(**record))
-        batch_counter += 1
-        if batch_counter > 80000:
-            session.commit()
-            batch_counter = 0
+    session = orm.sessionmaker(bind=engine)()
+    for records in grouper(records_iterator, group_size):
+        session.bulk_save_objects(
+            mapper_klass(**record) for record in filter(None, records)
+        )
 
     session.commit()

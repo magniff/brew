@@ -61,6 +61,10 @@ class FieldsToUse(click.ParamType):
         ','.join(sorted(DEFAULT_SPECIFICATION))
     )
 )
+@click.option(
+    '-g', '--group_size', default=20000, type=int,
+    help='How many records write to db at ones.'
+)
 @click.argument('fastq_files', type=FileTableParam(), nargs=-1)
 def brew(**kwargs):
     main_routine(**kwargs)

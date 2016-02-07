@@ -4,7 +4,7 @@ from .storage import write_to_sqlite
 from .specification import DEFAULT_SPECIFICATION
 
 
-def main_routine(fastq_files, output, dryrun, fields):
+def main_routine(fastq_files, output, dryrun, fields, group_size):
     user_spec = DEFAULT_SPECIFICATION
     if fields is not None:
         user_spec = {field: DEFAULT_SPECIFICATION[field] for field in fields}
@@ -24,6 +24,6 @@ def main_routine(fastq_files, output, dryrun, fields):
             parse_records(specification=user_spec) |
             write_to_sqlite(
                 output=output, table_name=fastq.table_name,
-                specification=user_spec
+                specification=user_spec, group_size=group_size
             )
         )

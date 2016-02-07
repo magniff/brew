@@ -60,7 +60,7 @@ $ ls -lh some.db
 
 ### ACCESS TO DATA
 As expected `some.db` has three tables:
-```bash
+```sql
 $ sqlite3 some.db 
 sqlite> .schema
 CREATE TABLE forward (
@@ -81,6 +81,7 @@ CREATE TABLE barcode (
 ```
 The first thing you probably wanna do is to create view, that jons tables together:
 ```sql
+sqlite> 
 CREATE VIEW DATA AS
 SELECT f.read_identifier as ident,
        f.sequence as forward,
