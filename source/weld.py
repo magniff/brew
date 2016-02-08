@@ -66,9 +66,9 @@ class FieldsToUse(click.ParamType):
     help='How many records write to db at ones.'
 )
 @click.argument('fastq_files', type=FileTableParam(), nargs=-1)
-def brew(**kwargs):
+def weld(**kwargs):
     main_routine(**kwargs)
 
 
 if __name__ == "__main__":
-    brew()
+    weld()

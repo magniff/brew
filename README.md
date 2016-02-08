@@ -1,18 +1,18 @@
-# BREW
+# WELD
 
 This simple utility aimed to convert illumina fastq files into a single sqlite3 database for following processing.
 
 ## INSTALATION
-BREW is written in [python3](https://www.python.org/downloads/release/python-351/), so make sure that you have one, if you do then just run
+weld is written in [python3](https://www.python.org/downloads/release/python-351/), so make sure that you have one, if you do then just run
 ```bash
 $ python3 setup.py install
 ```
 and you are all set, have a look at the "help" first
 ```bash
-$ brew -h
-Usage: brew [OPTIONS] [FASTQ_FILES]...
+$ weld -h
+Usage: weld [OPTIONS] [FASTQ_FILES]...
 
-  Creates sqlite3 database from fastq files. sample usage: brew -o output.db
+  Creates sqlite3 database from fastq files. sample usage: weld -o output.db
   file1@table1 ... filen@tablen -f field1,filed2
 
 Options:
@@ -46,7 +46,7 @@ $ ls -lh /home/magniff/Downloads/seqs/{r1.fastq,r2.fastq,barcode.fastq}
 ```
 Lets build database out of them:
 ```bash
-$ brew -o some.db ~/Downloads/seqs/{r1.fastq@forward,r2.fastq@reverse,barcode.fastq@barcode}
+$ weld -o some.db ~/Downloads/seqs/{r1.fastq@forward,r2.fastq@reverse,barcode.fastq@barcode}
 Using fields: sequence, read_identifier.
 Processing file '/home/magniff/Downloads/seqs/r1.fastq' into table 'forward'
 Processing file '/home/magniff/Downloads/seqs/r2.fastq' into table 'reverse'
